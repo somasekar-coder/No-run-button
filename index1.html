@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surprise 💕</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at top, #ff9a9e, #fad0c4, #fbc2eb);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+}
+
+/* ===== LIVE HEART BACKGROUND ===== */
+.heart-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.heart-bg span {
+    position: absolute;
+    bottom: -50px;
+    font-size: 22px;
+    opacity: 0.6;
+    animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+    from { transform: translateY(0) scale(0.8); opacity: 0; }
+    10% { opacity: 1; }
+    to { transform: translateY(-120vh) scale(1.3); opacity: 0; }
+}
+
+.box {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+}
+
+h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 46px;
+    margin-bottom: 30px;
+    color: #7b143c;
+}
+
+.buttons {
+    display: flex;
+    gap: 28px;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    font-size: 20px;
+    padding: 14px 36px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: transform 0.25s ease;
+}
+
+#yes {
+    background: linear-gradient(135deg, #ff4e8a, #ff85a2);
+    color: white;
+    box-shadow: 0 0 25px rgba(255, 78, 138, 0.7);
+}
+
+#no {
+    background: #555;
+    color: white;
+}
+
+canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.celebrate {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 4;
+    font-family: 'Great Vibes', cursive;
+    color: #7b143c;
+    text-align: center;
+}
+
+.celebrate div {
+    font-size: 44px;
+    margin-top: 20px;
+}
+
+footer {
+    position: fixed;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: rgba(123, 20, 60, 0.7);
+    z-index: 5;
+}
+</style>
+</head>
+<body>
+
+<div class="heart-bg"></div>
+
+<canvas id="confetti"></canvas>
+<audio id="music" src="music.mp3" loop></audio>
+
+<div class="box">
+    <h1 id="question">Hey, Princess will you go out as my valentine?💖🫴</h1>
+    <div class="buttons">
+        <button id="yes">Yes 💕</button>
+        <button id="no">No 🫣</button>
+    </div>
+</div>
+
+<div class="celebrate" id="celebrate">
+    🎉🎉🎉🎉🎉🎉
+    <div id="celebrateText">
+        Looking up to take you out on a memorable date💕🥰
+    </div>
+</div>
+
+<footer id="footer">Made with ❤️ by Your somu</footer>
+
+<script>
+/* ========= TEXT ========= */
+//document.getElementById("question").innerHTML =
+  //  "Hey, Princess will you go out as my valentine?💖🫴";
+
+//document.getElementById("celebrateText").innerHTML =
+  //  "Looking up to take you out on a memorable date💕🥰";
+
+//document.getElementById("footer").innerHTML =
+  //  "Made with ❤️ by Your somu";
+
+/* ===== LIVE HEART BACKGROUND ===== */
+const heartBg = document.querySelector(".heart-bg");
+let heartInterval = null;
+
+function createFloatingHeart() {
+    const heart = document.createElement("span");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 16 + "px";
+    heart.style.animationDuration = Math.random() * 6 + 6 + "s";
+    heartBg.appendChild(heart);
+    setTimeout(() => heart.remove(), 12000);
+}
+function startBackgroundHearts() {
+    if (heartInterval) return;
+    heartInterval = setInterval(createFloatingHeart, 400);
+}
+/* ========= MUSIC (FIRST INTERACTION) ========= */
+const music = document.getElementById("music");
+
+document.getElementById("yes").addEventListener("click", () => {
+    music.currentTime = 0;
+    music.volume = 0.6;
+    music.play();
+    //music.play().catch(() => {
+    //    console.log("Autoplay blocked until user interaction");
+    //});
+});
+//document.addEventListener("click", () => {
+  //  music.volume = 0.6;
+    //music.play();
+//}, { once: true });
+
+/* ========= UNIVERSAL NO BUTTON ESCAPE ========= */
+const noBtn = document.getElementById("no");
+
+function moveNoButton() {
+    //const padding = 20;
+    const maxX = window.innerWidth / 2;
+    const maxY = window.innerHeight / 2;
+
+   // noBtn.style.position = "fixed";
+   //noBtn.style.left = Math.random() * maxX + "px";
+   // noBtn.style.top = Math.random() * maxY + "px";
+    const x = (Math.random() - 0.5) * maxX;
+    const y = (Math.random() - 0.5) * maxY;
+
+    noBtn.style.transform = `translate(${x}px, ${y}px)`;
+}
+
+document.addEventListener("pointermove", (e) => {
+    const r = noBtn.getBoundingClientRect();
+    const d = Math.hypot(
+        e.clientX - (r.left + r.width / 2),
+        e.clientY - (r.top + r.height / 2)
+    );
+    if (d < 120) moveNoButton();
+});
+
+noBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    moveNoButton();
+});
+
+/* ========= CONFETTI ENGINE ========= */
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+window.addEventListener("resize", () => {
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+});
+    
+let particles = [];
+
+function explode() {
+    for (let i = 0; i < 120; i++) {
+        particles.push({
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            vx: (Math.random() - 0.5) * 18,
+            vy: (Math.random() - 0.8) * 18,
+            r: Math.random() * 5 + 2,
+            c: `hsl(${Math.random() * 360},100%,50%)`
+        });
+    }
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.25;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.c;
+        ctx.fill();
+    });
+
+    particles = particles.filter(p => p.y < canvas.height + 30);
+    requestAnimationFrame(animate);
+}
+animate();
+
+/* ========= HEARTS + PARTY POPPERS ========= */
+let heartInterval;
+
+function spawnHeart() {
+    const h = document.createElement("div");
+    h.innerHTML = "❤️🎉";
+    h.style.position = "fixed";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.top = "100vh";
+    h.style.fontSize = "28px";
+    h.style.transition = "transform 4s linear, opacity 4s linear";
+    document.body.appendChild(h);
+
+    setTimeout(() => {
+        h.style.transform = "translateY(-120vh)";
+        h.style.opacity = 0;
+    }, 50);
+
+    setTimeout(() => h.remove(), 4000);
+}
+
+/* ========= YES CLICK ========= */
+document.getElementById("yes").onclick = () => {
+    document.getElementById("celebrate").style.display = "flex";
+
+    const explosionInterval = setInterval(explode, 250);
+    heartInterval = setInterval(spawnHeart, 300);
+
+    
+    startBackgroundHearts();
+    setTimeout(() => {
+        clearInterval(explosionInterval);
+        clearInterval(heartInterval);
+        document.getElementById("footer").innerHTML =
+            "My princess this means a lot to me my jaan ❤️";
+    }, 3000);
+};
+</script>
+
+</body>
+</html>
