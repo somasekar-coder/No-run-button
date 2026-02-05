@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Surprise 💕</title>
+<title>Just One Question 💕</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
 
@@ -19,7 +19,7 @@ body {
     overflow: hidden;
 }
 
-/* ===== LIVE HEART BACKGROUND ===== */
+/* ===== LIVE HEART BACKGROUND (STARTS AFTER YES) ===== */
 .heart-bg {
     position: fixed;
     inset: 0;
@@ -42,9 +42,9 @@ body {
     to { transform: translateY(-120vh) scale(1.3); opacity: 0; }
 }
 
+/* ===== CONTENT ===== */
 .box {
     text-align: center;
-    position: relative;
     z-index: 2;
     padding: 20px;
 }
@@ -84,6 +84,7 @@ button {
     color: white;
 }
 
+/* ===== EFFECTS ===== */
 canvas {
     position: fixed;
     inset: 0;
@@ -123,40 +124,29 @@ footer {
 </head>
 <body>
 
+<!-- Hearts background (empty until YES) -->
 <div class="heart-bg"></div>
 
 <canvas id="confetti"></canvas>
-<audio id="music" src="music.mp3" loop></audio>
+<audio id="music" src="music.mp3" preload="none" loop></audio>
 
 <div class="box">
-    <h1 id="question">Hey, Princess will you go out as my valentine?💖🫴</h1>
+    <h1>Hey, will you go out with me? 💖</h1>
     <div class="buttons">
         <button id="yes">Yes 💕</button>
-        <button id="no">No 🫣</button>
+        <button id="no">No 🙈</button>
     </div>
 </div>
 
 <div class="celebrate" id="celebrate">
-    🎉🎉🎉🎉🎉🎉
-    <div id="celebrateText">
-        Looking up to take you out on a memorable date💕🥰
-    </div>
+    🎉🎉🎉
+    <div>You just made me really happy 💕<br>Can’t wait to spend time with you 😊</div>
 </div>
 
-<footer id="footer">Made with ❤️ by Your somu</footer>
+<footer id="footer">Made with ❤️ just for you</footer>
 
 <script>
-/* ========= TEXT ========= */
-//document.getElementById("question").innerHTML =
-  //  "Hey, Princess will you go out as my valentine?💖🫴";
-
-//document.getElementById("celebrateText").innerHTML =
-  //  "Looking up to take you out on a memorable date💕🥰";
-
-//document.getElementById("footer").innerHTML =
-  //  "Made with ❤️ by Your somu";
-
-/* ===== LIVE HEART BACKGROUND ===== */
+/* ===== HEART BACKGROUND (CONTROLLED START) ===== */
 const heartBg = document.querySelector(".heart-bg");
 let heartInterval = null;
 
@@ -169,68 +159,49 @@ function createFloatingHeart() {
     heartBg.appendChild(heart);
     setTimeout(() => heart.remove(), 12000);
 }
+
 function startBackgroundHearts() {
     if (heartInterval) return;
     heartInterval = setInterval(createFloatingHeart, 400);
 }
-/* ========= MUSIC (FIRST INTERACTION) ========= */
+
+/* ===== MUSIC (YES ONLY) ===== */
 const music = document.getElementById("music");
 
-document.getElementById("yes").addEventListener("click", () => {
-    music.currentTime = 0;
-    music.volume = 0.6;
-    music.play();
-    //music.play().catch(() => {
-    //    console.log("Autoplay blocked until user interaction");
-    //});
-});
-//document.addEventListener("click", () => {
-  //  music.volume = 0.6;
-    //music.play();
-//}, { once: true });
-
-/* ========= UNIVERSAL NO BUTTON ESCAPE ========= */
+/* ===== NO BUTTON ESCAPE ===== */
 const noBtn = document.getElementById("no");
 
-function moveNoButton() {
-    //const padding = 20;
-    const maxX = window.innerWidth / 2;
-    const maxY = window.innerHeight / 2;
-
-   // noBtn.style.position = "fixed";
-   //noBtn.style.left = Math.random() * maxX + "px";
-   // noBtn.style.top = Math.random() * maxY + "px";
-    const x = (Math.random() - 0.5) * maxX;
-    const y = (Math.random() - 0.5) * maxY;
-
+function escapeNo() {
+    const x = (Math.random() - 0.5) * window.innerWidth * 0.6;
+    const y = (Math.random() - 0.5) * window.innerHeight * 0.6;
     noBtn.style.transform = `translate(${x}px, ${y}px)`;
 }
 
-document.addEventListener("pointermove", (e) => {
+document.addEventListener("pointermove", e => {
     const r = noBtn.getBoundingClientRect();
     const d = Math.hypot(
         e.clientX - (r.left + r.width / 2),
         e.clientY - (r.top + r.height / 2)
     );
-    if (d < 120) moveNoButton();
+    if (d < 120) escapeNo();
 });
 
-noBtn.addEventListener("touchstart", (e) => {
+noBtn.addEventListener("touchstart", e => {
     e.preventDefault();
-    moveNoButton();
+    escapeNo();
 });
 
-/* ========= CONFETTI ENGINE ========= */
+/* ===== CONFETTI ===== */
 const canvas = document.getElementById("confetti");
 const ctx = canvas.getContext("2d");
-canvas.width = innerWidth;
-canvas.height = innerHeight;
 
-window.addEventListener("resize", () => {
+function resize() {
     canvas.width = innerWidth;
     canvas.height = innerHeight;
-});
-    
+}
+resize();
+addEventListener("resize", resize);
+
 let particles = [];
 
 function explode() {
@@ -248,7 +219,6 @@ function explode() {
 
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     particles.forEach(p => {
         p.x += p.vx;
         p.y += p.vy;
@@ -258,56 +228,33 @@ function animate() {
         ctx.fillStyle = p.c;
         ctx.fill();
     });
-
     particles = particles.filter(p => p.y < canvas.height + 30);
     requestAnimationFrame(animate);
 }
 animate();
 
-/* ========= HEARTS + PARTY POPPERS ========= */
-let heartInterval;
-
-function spawnHeart() {
-    const h = document.createElement("div");
-    h.innerHTML = "❤️🎉";
-    h.style.position = "fixed";
-    h.style.left = Math.random() * 100 + "vw";
-    h.style.top = "100vh";
-    h.style.fontSize = "28px";
-    h.style.transition = "transform 4s linear, opacity 4s linear";
-    document.body.appendChild(h);
-
-    setTimeout(() => {
-        h.style.transform = "translateY(-120vh)";
-        h.style.opacity = 0;
-    }, 50);
-
-    setTimeout(() => h.remove(), 4000);
-}
-
-/* ========= YES CLICK ========= */
+/* ===== YES CLICK ===== */
 document.getElementById("yes").onclick = () => {
     document.getElementById("celebrate").style.display = "flex";
 
-    const explosionInterval = setInterval(explode, 250);
-    heartInterval = setInterval(spawnHeart, 300);
+    // music
+    music.volume = 0.6;
+    music.currentTime = 0;
+    music.play();
 
-    
+    // start background hearts
     startBackgroundHearts();
+
+    // confetti
+    const confettiTimer = setInterval(explode, 250);
+
     setTimeout(() => {
-        clearInterval(explosionInterval);
-        clearInterval(heartInterval);
-        document.getElementById("footer").innerHTML =
-            "My princess this means a lot to me my jaan ❤️";
+        clearInterval(confettiTimer);
+        document.getElementById("footer").innerText =
+            "So happy you said YES ❤️";
     }, 3000);
 };
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
