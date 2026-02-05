@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Surprise 💕</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
@@ -157,8 +158,9 @@ footer {
 
 /* ===== LIVE HEART BACKGROUND ===== */
 const heartBg = document.querySelector(".heart-bg");
+let heartInterval = null;
 
-setInterval(() => {
+function createFloatingHeart() {
     const heart = document.createElement("span");
     heart.innerHTML = "❤️";
     heart.style.left = Math.random() * 100 + "vw";
@@ -166,8 +168,11 @@ setInterval(() => {
     heart.style.animationDuration = Math.random() * 6 + 6 + "s";
     heartBg.appendChild(heart);
     setTimeout(() => heart.remove(), 12000);
-}, 400);
-
+}
+function startBackgroundHearts() {
+    if (heartInterval) return;
+    heartInterval = setInterval(createFloatingHeart, 400);
+}
 /* ========= MUSIC (FIRST INTERACTION) ========= */
 const music = document.getElementById("music");
 
@@ -287,6 +292,8 @@ document.getElementById("yes").onclick = () => {
     const explosionInterval = setInterval(explode, 250);
     heartInterval = setInterval(spawnHeart, 300);
 
+    
+    startBackgroundHearts();
     setTimeout(() => {
         clearInterval(explosionInterval);
         clearInterval(heartInterval);
@@ -298,6 +305,7 @@ document.getElementById("yes").onclick = () => {
 
 </body>
 </html>
+
 
 
 
