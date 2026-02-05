@@ -27,17 +27,16 @@ body {
 
 h1 {
     font-family: 'Great Vibes', cursive;
-    font-size: 48px;
+    font-size: 46px;
     margin-bottom: 30px;
     color: #7b143c;
 }
 
 .buttons {
     display: flex;
-    gap: 30px;
+    gap: 28px;
     justify-content: center;
     align-items: center;
-    position: relative;
 }
 
 button {
@@ -46,6 +45,8 @@ button {
     border: none;
     border-radius: 40px;
     cursor: pointer;
+    white-space: nowrap;
+    transition: transform 0.25s ease;
 }
 
 #yes {
@@ -57,7 +58,6 @@ button {
 #no {
     background: #555;
     color: white;
-    position: absolute;
 }
 
 canvas {
@@ -82,7 +82,7 @@ canvas {
 }
 
 .celebrate div {
-    font-size: 48px;
+    font-size: 44px;
     margin-top: 20px;
 }
 
@@ -103,7 +103,7 @@ footer {
 <audio id="music" src="music.mp3" loop></audio>
 
 <div class="box">
-    <h1 id="question"></h1>
+    <h1 id="question">Hey, Princess will you go out as my valentine?💖🫴</h1>
     <div class="buttons">
         <button id="yes">Yes 💕</button>
         <button id="no">No 🫣</button>
@@ -112,21 +112,24 @@ footer {
 
 <div class="celebrate" id="celebrate">
     🎉🎉🎉
-    <div id="celebrateText" style="margin-top:20px;"></div>
+    <div id="celebrateText">
+        Looking up to take you out on a memorable date💕🥰<br>
+        Looking up to take you out on a memorable date💕🥰
+    </div>
 </div>
 
 <footer id="footer"></footer>
 
 <script>
 /* ========= TEXT ========= */
-document.getElementById("question").innerHTML =
-    "Hey, Princess will you go out as my valentine?💖🫴";
+//document.getElementById("question").innerHTML =
+  //  "Hey, Princess will you go out as my valentine?💖🫴";
 
-document.getElementById("celebrateText").innerHTML =
-    "Looking up to take you out on a memorable date💕🥰";
+//document.getElementById("celebrateText").innerHTML =
+  //  "Looking up to take you out on a memorable date💕🥰";
 
-document.getElementById("footer").innerHTML =
-    "Made with ❤️ by Your somu";
+//document.getElementById("footer").innerHTML =
+  //  "Made with ❤️ by Your somu";
 
 /* ========= MUSIC (FIRST INTERACTION) ========= */
 const music = document.getElementById("music");
@@ -139,13 +142,17 @@ document.addEventListener("click", () => {
 const noBtn = document.getElementById("no");
 
 function moveNoButton() {
-    const padding = 20;
-    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+    //const padding = 20;
+    const maxX = window.innerWidth / 2;
+    const maxY = window.innerHeight / 2;
 
-    noBtn.style.position = "fixed";
-    noBtn.style.left = Math.random() * maxX + "px";
-    noBtn.style.top = Math.random() * maxY + "px";
+   // noBtn.style.position = "fixed";
+   //noBtn.style.left = Math.random() * maxX + "px";
+   // noBtn.style.top = Math.random() * maxY + "px";
+    const x = (Math.random() - 0.5) * maxX;
+    const y = (Math.random() - 0.5) * maxY;
+
+    noBtn.style.transform = `translate(${x}px, ${y}px)`;
 }
 
 document.addEventListener("pointermove", (e) => {
@@ -245,5 +252,6 @@ document.getElementById("yes").onclick = () => {
 
 </body>
 </html>
+
 
 
