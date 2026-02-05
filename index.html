@@ -24,7 +24,7 @@ body {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    z-index: 0;
+    z-index: 1;
     overflow: hidden;
 }
 
@@ -89,7 +89,7 @@ canvas {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    z-index: 1;
+    z-index: 2;
 }
 
 .celebrate {
@@ -234,7 +234,8 @@ function animate() {
 animate();
 
 /* ===== YES CLICK ===== */
-document.getElementById("yes").onclick = () => {
+const yesBtn = document.getElementById("yes");
+    yesBtn.addEventListener("click", () => {
     document.getElementById("celebrate").style.display = "flex";
 
     // music
@@ -251,11 +252,12 @@ document.getElementById("yes").onclick = () => {
     setTimeout(() => {
         clearInterval(confettiTimer);
         document.getElementById("footer").innerText =
-            "So happy you said YES ❤️";
+            "My princess this means a lot to me my jaan ❤️";
     }, 3000);
 };
 </script>
 
 </body>
 </html>
+
 
