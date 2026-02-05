@@ -22,35 +22,42 @@ body {
     text-align: center;
     position: relative;
     z-index: 2;
+    padding: 20px;
 }
 
 h1 {
     font-family: 'Great Vibes', cursive;
-    font-size: 54px;
-    margin-bottom: 40px;
+    font-size: 48px;
+    margin-bottom: 30px;
     color: #7b143c;
 }
 
+.buttons {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
 button {
-    font-size: 22px;
-    padding: 15px 45px;
+    font-size: 20px;
+    padding: 14px 36px;
     border: none;
     border-radius: 40px;
     cursor: pointer;
-    position: absolute;
 }
 
 #yes {
     background: linear-gradient(135deg, #ff4e8a, #ff85a2);
     color: white;
-    left: -140px;
     box-shadow: 0 0 25px rgba(255, 78, 138, 0.7);
 }
 
 #no {
     background: #555;
     color: white;
-    left: 140px;
+    position: absolute;
 }
 
 canvas {
@@ -76,6 +83,7 @@ canvas {
 
 .celebrate div {
     font-size: 48px;
+    margin-top: 20px;
 }
 
 footer {
@@ -96,8 +104,10 @@ footer {
 
 <div class="box">
     <h1 id="question"></h1>
-    <button id="yes">Yes 💕</button>
-    <button id="no">No 🫣</button>
+    <div class="buttons">
+        <button id="yes">Yes 💕</button>
+        <button id="no">No 🫣</button>
+    </div>
 </div>
 
 <div class="celebrate" id="celebrate">
@@ -133,6 +143,7 @@ function moveNoButton() {
     const maxX = window.innerWidth - noBtn.offsetWidth - padding;
     const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
+    noBtn.style.position = "fixed";
     noBtn.style.left = Math.random() * maxX + "px";
     noBtn.style.top = Math.random() * maxY + "px";
 }
@@ -157,6 +168,11 @@ const ctx = canvas.getContext("2d");
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
+window.addEventListener("resize", () => {
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+});
+    
 let particles = [];
 
 function explode() {
@@ -229,4 +245,5 @@ document.getElementById("yes").onclick = () => {
 
 </body>
 </html>
+
 
